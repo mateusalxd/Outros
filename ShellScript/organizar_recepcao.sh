@@ -18,7 +18,7 @@ IND_SIMULACAO=0
 
 function ajuda() {
   echo "NOME"
-  echo  "  ${0} - realiza a organização de XMLs recepcionados de CT-es e NF-es"
+  echo  " ${0} - realiza a organização de XMLs recepcionados de CT-es e NF-es"
   echo -e "\nSINOPSE"
   echo "  ${0} [-s][-h] -o diretório -c diretório -n diretório [-b diretório]"
   echo -e "\nDESCRIÇÃO"
