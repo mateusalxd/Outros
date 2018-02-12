@@ -113,8 +113,25 @@ function processar_arquivos(){
   local ANO_MES=
   local CNPJ=
   local PADRAO="[nN][fF][eE]_[0-9][0-9]*.[xX][mM][lL]"
+  local HORA_ATUAL=$(date +%s)
+  local HORA_ANTERIOR=0
 
-  for ARQUIVO_NFE in $(find ${DIR_ORIGEM} -maxdepth 1 -name ${PADRAO} -type f) ;
+  # Verifica se o script já foi executado alguma vez
+  if [ -s ${DIR_ORIGEM}/ultima_execucao.log ] ;
+  then
+    HORA_ANTERIOR=$(cat ${DIR_ORIGEM}/ultima_execucao.log)
+  fi
+
+  # Calcula os segundos referente a última execução
+  local DIFERENCA=$[${HORA_ATUAL} - ${HORA_ANTERIOR}]
+
+  # Salva o horário da última execução
+  echo ${HORA_ATUAL} > ${DIR_ORIGEM}/ultima_execucao.log
+
+  for ARQUIVO_NFE in $(find ${DIR_ORIGEM} -maxdepth 1 \
+                                          -type f \
+                                          -newermt "-${DIFERENCA} seconds" \
+                                          -name ${PADRAO}) ;
   do
     # Montagem do diretório de backup
     ANO_MES=$(echo "$(basename ${ARQUIVO_NFE})" \
